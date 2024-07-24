@@ -38,12 +38,30 @@ class  Matricula(rx.Model, table=True):
     estudiante: Optional[Estudiantes] = Relationship(back_populates="matriculas")
 
 
+
 class User(rx.Model, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
     password: str
     estudiante_id : int = Field(foreign_key="estudiantes.id")
-    estudiante: Optional[Estudiantes] = Relationship(back_populates="matriculas")
+    estudiante: Optional[Estudiantes] = Relationship(back_populates="user")
+
+# Creamos cursos para gestionar con las matriculas y asignaciones que tengan
+class AsiganturaPeriodo(rx.Model, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    nombre: str
+    codigo: str
+    fecha = str
+    estado = str
+    Asignatura_id : int = Field(foreign_key="asignatura.id")
+    asignatura: Optional['Asignatura'] = Relationship(back_populates="asignatura_periodo")
+    paralelo_id : int = Field(foreign_key="paralelo.id")
+    paralelo: Optional['Paralelo'] = Relationship(back_populates="asigantura_periodo")
+    periodo_academico_id : int = Field(foreign_key="periodo_academico.id")
+    periodo_academico: Optional["PeriodoAcademico"] = Relationship(back_populates="asigantura_periodo")
+    matriculas: List['Matricula'] = Relationship(back_populates="asigantura_periodo")
+    #asignaciones tareas
+
 
 
 class  Carrera(rx.Model, table=True):
